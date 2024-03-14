@@ -1,0 +1,11 @@
+<player_registration>
+    <id>1</id>
+    <name>John Doe</name>
+    <age>25</age>
+    <country>USA</country>
+    <position>Forward</position>
+    <achievements>
+        <achievement year="2022">League Winner</achievement>
+        <achievement year="2023">Top Scorer</achievement>
+    </achievements>
+</player_registration>
