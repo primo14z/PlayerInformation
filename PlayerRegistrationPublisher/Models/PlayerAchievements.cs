@@ -12,12 +12,12 @@ namespace PlayerRegistrationPublisher.Models
             if (year.Value != null)
                 Year = Convert.ToInt32(year.Value);
             else
-                Console.WriteLine("Year is null");
+                throw new ArgumentNullException("Year is null");
 
-            if (title != null)
+            if (title != string.Empty)
                 Title = title;
             else
-                Console.WriteLine("Title is null");
+                throw new ArgumentNullException("Title is null");
         }
     }
 }

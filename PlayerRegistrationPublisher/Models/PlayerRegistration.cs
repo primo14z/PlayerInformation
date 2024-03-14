@@ -15,27 +15,27 @@ namespace PlayerRegistrationPublisher.Models
             if (id.Value != null)
                 Id = Convert.ToInt32(id.Value);
             else
-                Console.WriteLine("Id is null");
+                throw new ArgumentNullException("Id is null");
 
-            if (name.Value != null)
+            if (name.Value != string.Empty)
                 Name = name.Value;
             else
-                Console.WriteLine("Name is null");
+                throw new ArgumentNullException("Name is null");
 
             if (age.Value != null)
                 Age = Convert.ToInt32(age.Value);
             else
-                Console.WriteLine("Age is null");
+                throw new ArgumentNullException("Age is null");
 
-            if (country.Value != null)
+            if (country.Value != string.Empty)
                 Country = country.Value;
             else
-                Console.WriteLine("Country is null");
+                throw new ArgumentNullException("Country is null");
 
-            if (position.Value != null)
+            if (position.Value != string.Empty)
                 Position = position.Value;
             else
-                Console.WriteLine("Position is null");
+                throw new ArgumentNullException("Position is null");
         }
     }
 }

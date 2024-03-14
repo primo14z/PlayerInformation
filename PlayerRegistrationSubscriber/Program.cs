@@ -10,7 +10,8 @@ public class Program
         using (var connection = factory.CreateConnection())
         using (var channel = connection.CreateModel())
         {
-            string exchangeName = "PlayerInformation";
+            string exchangeName = "player.information";
+            channel.ExchangeDeclare(exchange: exchangeName, type: "headers", durable: true);
             var queueName = channel.QueueDeclare().QueueName;
 
             // Bind queue to both registration and achievement events
