@@ -17,6 +17,7 @@ public class Program
         using (var connection = factory.CreateConnection())
         using (var channel = connection.CreateModel())
         {
+            //Creating exchange and Queue for player registration and achievements
             var exchangeName = "PlayerInformation";
             channel.ExchangeDeclare(exchange: exchangeName, type: "headers", durable: true);
             channel.QueueDeclare("player.information.registration");
@@ -32,6 +33,7 @@ public class Program
                 { "type", "achievements"}
             });
 
+            //Looping through the xml
             foreach (var player in doc.Descendants("player_registration"))
             {
                 var eventId = player.GetHashCode();
@@ -60,10 +62,13 @@ public class Program
                     event_type = "player_registration",
                     player = registrationEventModel
                 };
-
-                var registrationMessageBody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(registrationEvent));
+                
                 try
                 {
+                    //Parsing into JSON
+                    var registrationMessageBody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(registrationEvent));
+
+                    //Creating header properties
                     IBasicProperties properties = channel.CreateBasicProperties();
                     properties.Headers = new Dictionary<string, object>
                     {
@@ -80,6 +85,7 @@ public class Program
                     throw new Exception($"Event with id: {eventId}", e.InnerException);
                 }
 
+                //Looping through achievements
                 foreach (var achievement in player.Descendants("achievements"))
                 {
                     var eventIdAchievement = achievement.GetHashCode();
@@ -99,17 +105,19 @@ public class Program
                         achievementList.Add(new PlayerAchievements(achievementYear, achievementTitle));
                     }
 
+                    //Creating achievement event
                     var achievementEvent = new
                     {
                         event_type = "player_achievements",
                         player_id = playerId.Value,
                         achievements = achievementList
-                    };
-
-                    var achievementMessageBody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(achievementEvent));
+                    };               
 
                     try
                     {
+                        var achievementMessageBody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(achievementEvent));
+
+                        //Creating headers
                         IBasicProperties achievementProperties = channel.CreateBasicProperties();
                         achievementProperties.Headers = new Dictionary<string, object>
                         {
@@ -125,7 +133,6 @@ public class Program
                         throw new Exception($"Event with id: {eventIdAchievement}", e.InnerException);
                     }
                 }
-                Task.Delay(1000);
             }
         }
     }
