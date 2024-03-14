@@ -61,10 +61,6 @@ public class Program
                     channel.BasicPublish(exchange: exchangeName, routingKey: "", basicProperties: properties, body: registrationMessageBody);
                     Console.WriteLine($"The event was succesfully published on exchange: {exchangeName}, with Id: {eventId} and body: {JsonConvert.SerializeObject(registrationEvent)}");
                 }
-                catch (ArgumentNullException e)
-                {
-                    throw new ArgumentNullException($"Event with id: {eventId}", e.InnerException);
-                }
                 catch (Exception e)
                 {
                     throw new Exception($"Event with id: {eventId}", e.InnerException);
